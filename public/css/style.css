@@ -1,0 +1,146 @@
+body {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  flex: 1;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: #344256 !important;
+  text-decoration: none;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  margin-right: 0.5rem;
+  background: linear-gradient(135deg, #06beb6, #48b1bf);
+}
+
+.icon-wrapper i {
+  color: white;
+  font-size: 23px;
+}
+
+.navbar {
+  background-color: #fff !important;
+
+  height: 5rem;
+}
+
+.nav-link {
+  color: #222222 !important;
+}
+
+/* footer */
+.f-info-links a {
+  text-decoration: none;
+  color: #222222;
+}
+.f-info-links a:hover {
+  text-decoration: underline;
+  color: #222222;
+}
+
+.f-info {
+  height: 8rem;
+  display: flex;
+
+  background-color: #ebebeb;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.f-info-socials,
+.f-info-links,
+.f-info-brand {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.f-info-socials i {
+  font-size: 1.2rem;
+}
+
+/* CARDS */
+
+.card {
+  border: none !important;
+  margin-bottom: 2rem;
+  transition: 0.3s ease-out;
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
+  overflow: hidden;
+}
+.card-img-top {
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 0 !important;
+}
+.card-text p {
+  font-weight: 400 !important;
+}
+
+.listing-link {
+  text-decoration: none;
+}
+
+/* CARD EFFECT  */
+
+.card-img-overlay {
+  opacity: 0;
+}
+
+.index-card:hover {
+  /* background-color: #0DA2E7; */
+  /* box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); */
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
+/* .card-img-overlay:hover {
+  opacity: 0.1;
+  background-color: white;
+} */
+
+/* // Create listing form  */
+
+.new-ls-heading {
+  width: 100%;
+
+  text-align: center;
+}
+
+.btn {
+  width: 100%;
+}
+
+/* SHOW PAGE  */
+.show-img {
+  height: 30vh;
+}
+
+.btns {
+  display: flex;
+}
+
+.show-card {
+  padding-left: 0;
+  padding-right: 0;
+}
