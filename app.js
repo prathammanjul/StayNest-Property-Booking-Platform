@@ -9,9 +9,13 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 
+//REQUIRE SCHEMA.JS FOR SERVER SIDE VALIDATION USING JOE
+const { listingSchema } = require("./schema.js");
+
 // FOR ERROR HANDLING {
 //require wrapAsync for err handling
 const wrapAsync = require("./utils/wrapAsync.js");
+
 //require ExpressCustom Error
 const ExpressError = require("./utils/ExpressError.js");
 const { wrap } = require("module");
@@ -52,6 +56,20 @@ app.get("/", (req, res) => {
   res.send("Hii , I am root");
 });
 
+// Create validation middleware
+const validateListing = (req, res, next) => {
+  let { error } = listingSchema.validate(req.body);
+
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    // console.log(errMsg);
+    // console.log(error.details);
+    throw new ExpressError(400, errMsg);
+  } else {
+    next();
+  }
+};
+
 // 1. INDEX ROUTE -  to show all data.
 app.get(
   "/listings",
@@ -79,10 +97,8 @@ app.get(
 //  CREATE ROUTE
 app.post(
   "/listings",
+  validateListing,
   wrapAsync(async (req, res, next) => {
-    if (!req.body.listing) {
-      throw new ExpressError(400, "Send Valid Data For Listing");
-    }
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
@@ -104,6 +120,7 @@ app.get(
 //UPDATE ROUTE
 app.put(
   "/listings/:id",
+  validateListing,
   wrapAsync(async (req, res) => {
     if (!req.body.listing) {
       throw new ExpressError(400, "Send Valid Data For Listing");
