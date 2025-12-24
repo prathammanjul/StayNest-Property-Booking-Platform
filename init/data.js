@@ -1,48 +1,118 @@
+// const mongoose = require("mongoose");
+// const Listing = require("../models/listing");
+
 const sampleListings = [
   {
     title: "Cozy Beachfront Cottage",
     description:
       "Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach.",
     image:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
-
+      "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?auto=format&fit=crop&w=800&q=60",
     price: 1500,
     location: "Malibu",
     country: "United States",
   },
   {
-    title: "Cozy Beachfront Cottage",
+    title: "Modern Loft in Downtown",
     description:
-      "Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach.",
+      "Stay in the heart of the city in this stylish loft apartment. Perfect for urban explorers!",
     image:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
-
-    price: 1500,
-    location: "Malibu",
+      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=60",
+    price: 1200,
+    location: "New York City",
     country: "United States",
   },
   {
-    title: "Cozy Beachfront Cottage",
+    title: "Mountain Retreat",
     description:
-      "Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach.",
+      "Unplug and unwind in this peaceful mountain cabin. Surrounded by nature, it's a perfect place to recharge.",
     image:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
-
-    price: 1500,
-    location: "Malibu",
+      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=60",
+    price: 1000,
+    location: "Aspen",
     country: "United States",
   },
   {
-    title: "Cozy Beachfront Cottage",
+    title: "Historic Villa in Tuscany",
     description:
-      "Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach.",
+      "Experience the charm of Tuscany in this beautifully restored villa. Explore the rolling hills and vineyards.",
     image:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
-
-    price: 1500,
-    location: "Malibu",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60",
+    price: 2500,
+    location: "Florence",
+    country: "Italy",
+  },
+  {
+    title: "Secluded Treehouse Getaway",
+    description:
+      "Live among the treetops in this unique treehouse retreat. A true nature lover's paradise.",
+    image:
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=60",
+    price: 800,
+    location: "Portland",
     country: "United States",
+  },
+  {
+    title: "Beachfront Paradise",
+    description:
+      "Step out of your door onto the sandy beach. This beachfront condo offers the ultimate relaxation.",
+    image:
+      "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=800&q=60",
+    price: 2000,
+    location: "Cancun",
+    country: "Mexico",
+  },
+  {
+    title: "Rustic Cabin by the Lake",
+    description:
+      "Spend your days fishing and kayaking on the serene lake. This cozy cabin is perfect for outdoor enthusiasts.",
+    image:
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=60",
+    price: 900,
+    location: "Lake Tahoe",
+    country: "United States",
+  },
+  {
+    title: "Luxury Penthouse with City Views",
+    description:
+      "Indulge in luxury living with panoramic city views from this stunning penthouse apartment.",
+    image:
+      "https://images.unsplash.com/photo-1622396481328-9b1b78cdd9fd?auto=format&fit=crop&w=800&q=60",
+    price: 3500,
+    location: "Los Angeles",
+    country: "United States",
+  },
+  {
+    title: "Safari Lodge in the Serengeti",
+    description:
+      "Experience the thrill of the wild in a comfortable safari lodge. Witness the Great Migration up close.",
+    image:
+      "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=800&q=60",
+    price: 4000,
+    location: "Serengeti National Park",
+    country: "Tanzania",
+  },
+  {
+    title: "Private Island Retreat",
+    description:
+      "Have an entire island to yourself for a truly exclusive and unforgettable vacation experience.",
+    image:
+      "https://images.unsplash.com/photo-1618140052121-39fc6db33972?auto=format&fit=crop&w=800&q=60",
+    price: 10000,
+    location: "Fiji",
+    country: "Fiji",
   },
 ];
 
-module.exports = { data: sampleListings };
+// async function seedDB() {
+//   await mongoose.connect("mongodb://127.0.0.1:27017/stayNest");
+
+//   await Listing.deleteMany({});
+//   await Listing.insertMany(sampleListings);
+
+//   console.log("Database seeded");
+//   mongoose.connection.close();
+// }
+
+// seedDB();
+// module.exports = { data: sampleListings };

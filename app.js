@@ -1,7 +1,7 @@
-// step 1
 // REQUIRE EXPRESS
 const express = require("express");
 const app = express();
+
 // REQUIRE mongoose
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
@@ -10,7 +10,8 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 
 //REQUIRE SCHEMA.JS FOR SERVER SIDE VALIDATION USING JOE
-const { listingSchema } = require("./schema.js");
+const { listingSchema, reviewSchema } = require("./schema.js");
+const Review = require("./models/review.js");
 
 // FOR ERROR HANDLING {
 //require wrapAsync for err handling
@@ -18,14 +19,10 @@ const wrapAsync = require("./utils/wrapAsync.js");
 
 //require ExpressCustom Error
 const ExpressError = require("./utils/ExpressError.js");
-const { wrap } = require("module");
 
 // }
 
-app.use(express.static(path.join(__dirname, "/public")));
-
 // CONNECT TO DATABASE / CREATE DATABASE
-
 let MONGO_URL = "mongodb://127.0.0.1:27017/stayNest";
 
 main()
@@ -40,11 +37,12 @@ async function main() {
   await mongoose.connect(MONGO_URL);
 }
 
-app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.engine("ejs", ejsMate);
+app.use(express.static(path.join(__dirname, "/public")));
 
 // START YOUR SERVER
 app.listen(8080, () => {
@@ -56,14 +54,27 @@ app.get("/", (req, res) => {
   res.send("Hii , I am root");
 });
 
-// Create validation middleware
+// Create validation middleware for Listings
 const validateListing = (req, res, next) => {
   let { error } = listingSchema.validate(req.body);
 
   if (error) {
     let errMsg = error.details.map((el) => el.message).join(",");
-    // console.log(errMsg);
+    console.log(errMsg);
     // console.log(error.details);
+    throw new ExpressError(400, errMsg);
+  } else {
+    next();
+  }
+};
+
+// Create validation middleware for reviews
+
+const validateReview = (req, res, next) => {
+  let { error } = reviewSchema.validate(req.body);
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    console.log(errMsg);
     throw new ExpressError(400, errMsg);
   } else {
     next();
@@ -107,7 +118,6 @@ app.post(
 );
 
 //EDIT ROUTE
-
 app.get(
   "/listings/:id/edit",
   wrapAsync(async (req, res) => {
@@ -139,6 +149,29 @@ app.delete(
     const deleteList = await Listing.findByIdAndDelete(id);
     //   console.log(deleteList);
     res.redirect("/listings");
+  })
+);
+
+// REVIEWS ROUTE
+app.post(
+  "/listings/:id/reviews",
+  validateReview,
+  wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    let listing = await Listing.findById(id);
+    let { review } = req.body;
+    let newReview = new Review(review);
+
+    // here we are accessing our reviews array from listing schema.
+    listing.reviews.push(newReview);
+
+    await newReview.save();
+    await listing.save();
+
+    // console.log("new reviewed saved");
+    // res.send("new reviewed saved");
+
+    res.redirect(`/listings/${listing._id}`);
   })
 );
 
