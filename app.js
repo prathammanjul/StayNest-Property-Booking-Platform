@@ -16,6 +16,8 @@ const ejsMate = require("ejs-mate");
 //require ExpressCustom Error
 const ExpressError = require("./utils/ExpressError.js");
 // }
+// require express-session to store cookie/connect-flash in browser
+const session = require("express-session");
 
 //require listing routes from lisitng.js
 const listings = require("./routes/listing.js");
@@ -47,6 +49,14 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
 });
+
+const sessionOptions = {
+  secret: "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,
+};
+
+app.use(session(sessionOptions));
 
 // set up basic API
 app.get("/", (req, res) => {
