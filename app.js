@@ -18,6 +18,7 @@ const ExpressError = require("./utils/ExpressError.js");
 // }
 // require express-session to store cookie/connect-flash in browser
 const session = require("express-session");
+const flash = require("connect-flash");
 
 //require listing routes from lisitng.js
 const listings = require("./routes/listing.js");
@@ -54,9 +55,22 @@ const sessionOptions = {
   secret: "mysupersecretcode",
   resave: false,
   saveUninitialized: true,
+  cookies: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  },
 };
 
+//use session
 app.use(session(sessionOptions));
+// use connect-flash (Always use it before routes)
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error ");
+  next();
+});
 
 // set up basic API
 app.get("/", (req, res) => {

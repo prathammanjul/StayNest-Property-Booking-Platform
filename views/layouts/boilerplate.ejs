@@ -30,7 +30,7 @@
     <%- include("../include/navbar.ejs") %>
 
     <div class="container">
-      <%- body %>
+      <%- include("../include/flash.ejs") %> <%- body %>
       <!-- This is where page-specific content gets injected -->
     </div>
 
@@ -41,5 +41,21 @@
       crossorigin="anonymous"
     ></script>
     <script src="/js/script.js"></script>
+    <script>
+      // Auto close bootstrap alerts after 3 seconds
+      setTimeout(() => {
+        document.querySelectorAll(".alert-success").forEach((alert) => {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        });
+      }, 1000);
+
+      // setTimeout(() => {
+      //   document.querySelectorAll(".alert-danger").forEach((alert) => {
+      //     const bsAlert = new bootstrap.Alert(alert);
+      //     bsAlert.close();
+      //   });
+      // }, 10000);
+    </script>
   </body>
 </html>
