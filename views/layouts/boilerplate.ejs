@@ -56,6 +56,13 @@
       //     bsAlert.close();
       //   });
       // }, 10000);
+
+      setTimeout(() => {
+        document.querySelectorAll(".error-alert").forEach((alert) => {
+          const errorAlert = new bootstrap.Alert(alert);
+          errorAlert.close();
+        });
+      }, 5000);
     </script>
   </body>
 </html>
