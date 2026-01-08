@@ -24,6 +24,7 @@
   </div>
 </div>
 <!-- edit link  -->
+
 <div class="btns mb-5">
   <a href="/listings/<%=listing._id%>/edit" class="btn btn-dark col-1 offset-3"
     >edit</a
@@ -36,9 +37,15 @@
   </form>
 </div>
 
+
+
+
+
+
 <!-- REVIEW SECTION  -->
 <div class="col-8 offset-3">
   <hr />
+  <% if (currUser && !listing.owner.equals(currUser._id)) { %>
   <h4 class="mb-4 mt-4">Leave a Reviews</h4>
 
   <form
@@ -79,6 +86,7 @@
   </form>
 
   <hr />
+  <% } %>
 
   <h4>All Reviews</h4>
   <% for (let reviews of listing.reviews) { %>
@@ -94,13 +102,17 @@
     </p>
 
     <!-- Review Delete button  -->
+         <% if (currUser && !listing.owner.equals(currUser._id)) { %>
     <form
       action="/listings/<%= listing._id %>/reviews/<%= reviews._id %>?_method=DELETE"
       method="POST"
       class="mb-2"
     >
+
       <button class="btn btn-sm btn-dark">Delete</button>
+
     </form>
+    <% } %>
   </div>
 
   <% } %>

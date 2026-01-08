@@ -1,26 +1,13 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-// require schema.js for server side validation using joi
-const { reviewSchema } = require("../schema.js");
+
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
 //require wrapAsync for err handling
 const wrapAsync = require("../utils/wrapAsync.js");
 //require ExpressCustom Error
 const ExpressError = require("../utils/ExpressError.js");
-const { isLoggedIn } = require("../middleware.js");
-
-// Create validation middleware for reviews
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-
-  if (error) {
-    const errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
+const { isLoggedIn, validateReview } = require("../middleware.js");
 
 // REVIEWS
 
@@ -32,6 +19,12 @@ router.post(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
+    // 🚫 BLOCK: Owner cannot review own listing
+    if (listing.owner.equals(req.user._id)) {
+      req.flash("error", "You cannot review your own listing!");
+      return res.redirect(`/listings/${listing._id}`);
+    }
+
     let { review } = req.body;
     let newReview = new Review(review);
 
