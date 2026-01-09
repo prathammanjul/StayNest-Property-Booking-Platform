@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
 //require wrapAsync for err handling
@@ -13,6 +12,8 @@ const {
   isReviewAuthor,
 } = require("../middleware.js");
 
+const reviewController = require("../controllers/reviews.js");
+
 // REVIEWS
 
 //Post route
@@ -20,47 +21,16 @@ router.post(
   "/",
   isLoggedIn,
   validateReview,
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let listing = await Listing.findById(id);
-    // 🚫 BLOCK: Owner cannot review own listing
-    if (listing.owner.equals(req.user._id)) {
-      req.flash("error", "You cannot review your own listing!");
-      return res.redirect(`/listings/${listing._id}`);
-    }
-
-    let { review } = req.body;
-    let newReview = new Review(review);
-    newReview.author = req.user._id;
-
-    // console.log(newReview);
-    // here we are accessing our reviews array from listing schema.
-    listing.reviews.push(newReview);
-
-    await newReview.save();
-    await listing.save();
-
-    // console.log("new reviewed saved");
-    // res.send("new reviewed saved");
-    req.flash("success", "Review added!");
-
-    res.redirect(`/listings/${listing._id}`);
-  })
+  wrapAsync(reviewController.createReview)
 );
 
-//Delete review route
+//Delete/Destroy review route
 
 router.delete(
   "/:reviewId",
   isLoggedIn,
   isReviewAuthor,
-  wrapAsync(async (req, res) => {
-    let { id, reviewId } = req.params;
-    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    req.flash("success", "Review Deleted!");
-    res.redirect(`/listings/${id}`);
-  })
+  wrapAsync(reviewController.destroyReview)
 );
 
 module.exports = router;
