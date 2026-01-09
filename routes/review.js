@@ -7,7 +7,11 @@ const Review = require("../models/review.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 //require ExpressCustom Error
 const ExpressError = require("../utils/ExpressError.js");
-const { isLoggedIn, validateReview } = require("../middleware.js");
+const {
+  isLoggedIn,
+  validateReview,
+  isReviewAuthor,
+} = require("../middleware.js");
 
 // REVIEWS
 
@@ -27,7 +31,9 @@ router.post(
 
     let { review } = req.body;
     let newReview = new Review(review);
+    newReview.author = req.user._id;
 
+    // console.log(newReview);
     // here we are accessing our reviews array from listing schema.
     listing.reviews.push(newReview);
 
@@ -47,6 +53,7 @@ router.post(
 router.delete(
   "/:reviewId",
   isLoggedIn,
+  isReviewAuthor,
   wrapAsync(async (req, res) => {
     let { id, reviewId } = req.params;
     await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });

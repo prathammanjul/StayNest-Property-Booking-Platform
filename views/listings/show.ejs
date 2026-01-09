@@ -24,7 +24,7 @@
   </div>
 </div>
 <!-- edit link  -->
-
+ <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
 <div class="btns mb-5">
   <a href="/listings/<%=listing._id%>/edit" class="btn btn-dark col-1 offset-3"
     >edit</a
@@ -37,7 +37,7 @@
   </form>
 </div>
 
-
+<% } %>
 
 
 
@@ -91,6 +91,7 @@
   <h4>All Reviews</h4>
   <% for (let reviews of listing.reviews) { %>
   <div class="border p-2 mt-4 mb-4 rounded border-success">
+    <h5>@<%=reviews.author.username %></h5>
     <p>
       <strong>Rating: </strong>
       <%=reviews.rating %>
@@ -102,17 +103,19 @@
     </p>
 
     <!-- Review Delete button  -->
-         <% if (currUser && !listing.owner.equals(currUser._id)) { %>
+
     <form
       action="/listings/<%= listing._id %>/reviews/<%= reviews._id %>?_method=DELETE"
       method="POST"
       class="mb-2"
     >
-
+  <% if (currUser && !listing.owner.equals(currUser._id)) { %>
       <button class="btn btn-sm btn-dark">Delete</button>
+        <% } %>
+
 
     </form>
-    <% } %>
+
   </div>
 
   <% } %>

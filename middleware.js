@@ -1,4 +1,5 @@
 const Listing = require("./models/listing");
+const Review = require("./models/review");
 //require ExpressCustom Error
 const ExpressError = require("./utils/ExpressError.js");
 // require schema.js for server side validation using joi
@@ -22,12 +23,23 @@ module.exports.saveRedirectUrl = (req, res, next) => {
   }
   next();
 };
-
+// check for the listing owner
 module.exports.isOwner = async (req, res, next) => {
   let { id } = req.params;
   let listing = await Listing.findById(id);
   if (!listing.owner.equals(res.locals.currUser._id)) {
     req.flash("error", "Your are not authorized to access it");
+    return res.redirect(`/listings/${id}`);
+  }
+  next();
+};
+
+// check for the review owner
+module.exports.isReviewAuthor = async (req, res, next) => {
+  let { id, reviewId } = req.params;
+  let review = await Review.findById(reviewId);
+  if (!review.author.equals(res.locals.currUser._id)) {
+    req.flash("error", "You are not the author of this review");
     return res.redirect(`/listings/${id}`);
   }
   next();
