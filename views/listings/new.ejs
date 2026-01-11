@@ -5,7 +5,13 @@
     <h2 class="new-ls-heading">Create a New Listing</h2>
 
     <!-- BOOTSTRAP FOR FORM VALIDATION - novalidate class="needs-validation" -->
-    <form action="/listings" method="post" novalidate class="needs-validation">
+    <form
+      action="/listings"
+      method="post"
+      novalidate
+      class="needs-validation"
+      enctype="multipart/form-data"
+    >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -34,13 +40,8 @@
       </div>
 
       <div class="mb-3">
-        <label for="image" class="form-label">Image Link</label>
-        <input
-          name="listing[image]"
-          type="text"
-          placeholder="enter image urls"
-          class="form-control"
-        />
+        <label for="image" class="form-label">Upload Listing Image </label>
+        <input name="listing[image]" type="file" class="form-control" />
       </div>
 
       <div class="row">

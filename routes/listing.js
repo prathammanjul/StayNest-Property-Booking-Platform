@@ -6,6 +6,11 @@ const Listing = require("../models/listing.js");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
 
+// to upload files from form - parse the form data using #Multer.
+const multer = require("multer");
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
+
 // 1. index route -  to show all data.
 // 2. create new Listing
 router
@@ -14,6 +19,7 @@ router
   .post(
     isLoggedIn,
     validateListing,
+    upload.single("listing[image]"),
     wrapAsync(listingController.createNewListings)
   );
 
