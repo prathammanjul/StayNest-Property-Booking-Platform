@@ -150,6 +150,7 @@ footer {
   padding-right: 0;
 }
 
+/* Review section  */
 .reviewContainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -177,4 +178,11 @@ footer {
 .starWrapper {
   overflow: hidden;
   width: fit-content;
+}
+
+/* Map */
+#map {
+  height: 400px;
+  width: 100vh;
+  border-radius: 1rem;
 }
