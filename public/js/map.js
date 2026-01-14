@@ -6,8 +6,16 @@ const map = new mapboxgl.Map({
   zoom: 8, // starting zoom
 });
 
-console.log(coordinates, typeof coordinates);
+// console.log(coordinates, typeof coordinates);
 // Create a default Marker and add it to the map.
 const marker = new mapboxgl.Marker({ color: "red" })
   .setLngLat(coordinates) //Listing.geometry.coordinates
+  .setPopup(
+    new mapboxgl.Popup({ offset: 25 })
+      .setHTML("<p>Exact location provided after booking</p>")
+      .setMaxWidth("300px")
+      .addTo(map)
+  )
   .addTo(map);
+
+// POP up on marker
