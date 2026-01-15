@@ -91,9 +91,9 @@ app.use((req, res, next) => {
 });
 
 // set up basic API
-app.get("/", (req, res) => {
-  res.send("Hii , I am root");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hii , I am root");
+// });
 
 // for listing routes we are only use this route
 app.use("/listings", listingRouter);
