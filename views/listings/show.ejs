@@ -61,6 +61,8 @@
 
 
 
+  
+
 <!-- Right Sidebar -->
     <aside class="right-sidebar">
       <!-- Booking Card -->
@@ -70,8 +72,9 @@
           <div class="price-value">&#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") :
             "0" %>/ night</div>
         </div>
-        <button class="book-now-btn btn-signup mb-4">
-          Book Now
+        <button  class="book-now-btn btn-signup mb-4">
+          <a href="/listings/<%= listing.id %>/booking-page">Book Now</a>
+       
         </button>
         <button
           class="wishlist-btn contact-expert-btn"
@@ -82,7 +85,7 @@
     </aside>
   </div>
   </div>
-  
+
   
   <!-- REVIEW SECTION  -->
   <div class="review-content show-heading">

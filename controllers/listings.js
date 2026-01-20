@@ -1,5 +1,7 @@
 const Listing = require("../models/listing.js");
+const Booking = require("../models/booking.js");
 //for maps - Reference Docs
+// Geocoding → place name → coordinates
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
@@ -69,7 +71,7 @@ module.exports.createNewListings = async (req, res) => {
   newListing.geometry = response.body.features[0].geometry;
 
   let savedListing = await newListing.save();
-  console.log(savedListing);
+  // console.log(savedListing);
   req.flash("success", "New Listing Created!");
 
   res.redirect("/listings");
@@ -97,7 +99,7 @@ module.exports.renderEditForm = async (req, res) => {
   let originalImageUrl = listing.image.url;
   originalImageUrl = originalImageUrl.replace(
     "/upload/",
-    "/upload/h_150,w_250/"
+    "/upload/h_150,w_250/",
   );
 
   // console.log(originalImageUrl);
@@ -138,4 +140,9 @@ module.exports.destroyListings = async (req, res) => {
   //   console.log(deleteList);
   req.flash("success", "listing deleted!");
   res.redirect("/listings");
+};
+
+//booking form
+module.exports.renderBookingForm = async (req, res) => {
+  res.render("listings/bookingForm.ejs");
 };

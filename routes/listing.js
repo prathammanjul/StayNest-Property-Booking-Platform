@@ -3,6 +3,7 @@ const router = express.Router();
 //require wrapAsync for err handling
 const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listing.js");
+const Booking = require("../models/booking.js");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
 
@@ -20,7 +21,7 @@ router
     isLoggedIn,
     upload.single("listing[image]"),
     validateListing,
-    wrapAsync(listingController.createNewListings)
+    wrapAsync(listingController.createNewListings),
   );
 
 // render New listings form
@@ -37,7 +38,7 @@ router
     isOwner,
     upload.single("listing[image]"),
     validateListing,
-    wrapAsync(listingController.updateListings)
+    wrapAsync(listingController.updateListings),
   )
   .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListings));
 
@@ -46,7 +47,8 @@ router.get(
   "/:id/edit",
   isLoggedIn,
   isOwner,
-  wrapAsync(listingController.renderEditForm)
+  wrapAsync(listingController.renderEditForm),
 );
 
+router.get("/:id/booking-page", wrapAsync(listingController.renderBookingForm));
 module.exports = router;
