@@ -505,15 +505,14 @@
 
         <div class="package-info">
           <div class="package-details">
-            <h4 class="package-name">{{ item.name }}</h4>
-            <p class="package-type">
-              {{ item.type === "package" ? "Package" : "Destination" }}
-            </p>
-            <p class="package-location" *ngIf="item.location || item.country">
-              {{ item.location || item.country }}
+            <h4 class="package-name"><%= listing.title %></h4>
+            <p class="package-type"><%= listing.categories %></p>
+            <p class="package-location">
+                <%= `${listing.location}, ${listing.country}` %>
+
             </p>
             <p class="package-duration" *ngIf="item.duration">
-              {{ item.duration }}
+
             </p>
           </div>
         </div>
@@ -521,19 +520,18 @@
         <div class="price-summary">
           <div class="price-row">
             <span>Base Price</span>
-            <span class="price"
-              >₹{{ item.basePrice.toLocaleString("en-IN") }}</span
-            >
+            <span>&#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") :
+            "0" %>/ night</span>
           </div>
           <div class="price-row">
             <span>Guests</span>
-            <span>{{ bookingForm.get("guests")?.value || 2 }}</span>
+            <span><%= listing.guest  %></span>
           </div>
           <hr class="divider" />
           <div class="price-row total">
             <span><strong>Total</strong></span>
             <span class="total-price"
-              ><strong>₹{{ totalPrice.toLocaleString("en-IN") }}</strong></span
+              ><strong>&#8377;<%=listing.price  %></strong></span
             >
           </div>
         </div>
@@ -542,7 +540,12 @@
 
     <!-- Right Side - Form -->
     <div class="form-container">
-      <form method="POST" novalidate class="needs-validation">
+      <form
+        method="POST"
+        action="/listings/<%=listing._id%>/bookings"
+        novalidate
+        class="needs-validation"
+      >
         <!-- Personal Information -->
         <div class="form-section">
           <div class="section-header">
@@ -556,7 +559,7 @@
                 >First Name <span class="required">*</span></label
               >
               <input
-                name="booking[firstname]"
+                name="booking[firstName]"
                 type="text"
                 id="firstName"
                 placeholder="Enter your first name"
@@ -573,7 +576,7 @@
                 >Last Name <span class="required">*</span></label
               >
               <input
-                name="booking[lastname]"
+                name="booking[lastName]"
                 type="text"
                 id="lastName"
                 placeholder="Enter your last name"
@@ -605,7 +608,7 @@
                 >Phone Number <span class="required">*</span></label
               >
               <input
-                name="booking[number]"
+                name="booking[contact]"
                 type="number"
                 id="phone"
                 placeholder="Enter your phone number"
@@ -634,7 +637,7 @@
                 type="date"
                 id="checkIn"
                 class="form-control"
-                name="booking[checkin]"
+                name="booking[checkIn]"
                 required
               />
               <div class="valid-feedback">Looks Good!</div>
@@ -649,7 +652,7 @@
                 type="date"
                 id="checkOut"
                 class="form-control"
-                name="booking[checkout]"
+                name="booking[checkOut]"
                 required
               />
               <div class="valid-feedback">Looks Good!</div>
@@ -659,7 +662,7 @@
 
           <div class="form-group">
             <label for="guests">Number of Guests</label>
-            <select id="guests" class="guests-dropdown">
+            <select id="guests" class="guests-dropdown" name="booking[guests]">
               <option value="1">1 Guest</option>
               <option value="2">2 Guests</option>
               <option value="3">3 Guests</option>
@@ -686,7 +689,7 @@
               <label for="emergencyContact">Emergency Contact Name</label>
               <input
                 type="text"
-                name="booking[emergencycontact]"
+                name="booking[emergencyContactName]"
                 id="emergencyContact"
                 placeholder="Full name of emergency contact"
                 class="form-control"
@@ -697,7 +700,7 @@
               <label for="emergencyPhone">Emergency Contact Phone</label>
               <input
                 type="number"
-                name="booking[emergencynumber]"
+                name="booking[emergencyNumber]"
                 id="emergencyPhone"
                 placeholder="Emergency contact phone number"
                 class="form-control"
@@ -718,7 +721,7 @@
               >Any special requirements or requests?</label
             >
             <textarea
-              name="booking[specialrequest]"
+              name="booking[specialRequest]"
               id="specialRequests"
               placeholder="Please let us know about any dietary restrictions, accessibility needs, or special occasions..."
               rows="4"
@@ -743,3 +746,19 @@
     </div>
   </div>
 </div>
+
+
+<script>
+
+let guestSelect = document.getElementById("guests");
+
+guestSelect.addEventListener("change" , function(){
+  let guestCount = guests.value;
+  console.log(guestCount);
+})
+
+
+
+
+
+</script>

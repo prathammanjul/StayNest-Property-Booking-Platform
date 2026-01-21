@@ -16,22 +16,26 @@ const bookingSchema = new Schema({
     type: String,
     required: true,
   },
-  checkin: {
-    type: Date,
-    required: true,
-  },
-  checkout: {
-    type: Date,
-    required: true,
-  },
-  totalGuest: {
+  contact: {
     type: Number,
     required: true,
   },
-  emergencyName: {
+  checkIn: {
+    type: Date,
+    required: true,
+  },
+  checkOut: {
+    type: Date,
+    required: true,
+  },
+  guests: {
+    type: Number,
+    required: true,
+  },
+  emergencyContactName: {
     type: String,
   },
-  emergencyContact: {
+  emergencyNumber: {
     type: Number,
   },
   specialRequest: {

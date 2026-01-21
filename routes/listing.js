@@ -50,5 +50,15 @@ router.get(
   wrapAsync(listingController.renderEditForm),
 );
 
-router.get("/:id/booking-page", wrapAsync(listingController.renderBookingForm));
+router.get(
+  "/:id/booking-page",
+
+  wrapAsync(listingController.renderBookingForm),
+);
+
+router.post(
+  "/:id/bookings",
+
+  wrapAsync(listingController.createBooking),
+);
 module.exports = router;

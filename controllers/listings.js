@@ -144,5 +144,18 @@ module.exports.destroyListings = async (req, res) => {
 
 //booking form
 module.exports.renderBookingForm = async (req, res) => {
-  res.render("listings/bookingForm.ejs");
+  let { id } = req.params;
+  const listing = await Listing.findById(id);
+  res.render("listings/bookingForm.ejs", { listing });
+};
+
+module.exports.createBooking = async (req, res) => {
+  let { id } = req.params;
+
+  let newBooking = new Booking(req.body.booking);
+  await newBooking.save();
+  req.flash("success", "Booked");
+  res.redirect("/listings");
+
+  console.log(newBooking);
 };
