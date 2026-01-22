@@ -1,5 +1,6 @@
 <% layout("layouts/boilerplate") %>
-<link href="/css/stayDetails.css" rel="stylesheet" />
+<link href="/css/showPage.css" rel="stylesheet" />
+
 <script>
   const mapToken = "<%= process.env.MAP_TOKEN %>";
   const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
@@ -72,8 +73,8 @@
           <div class="price-value">&#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") :
             "0" %>/ night</div>
         </div>
-        <button  class="book-now-btn btn-signup mb-4">
-          <a href="/listings/<%= listing.id %>/booking-page">Book Now</a>
+        <button  class="book-now-btn btn-signup mb-4" >
+          <a style="text-decoration: none;  color: #fff;" href="/listings/<%= listing.id %>/booking-page" >Book Now</a>
        
         </button>
         <button
@@ -182,8 +183,7 @@
 
 
 <!-- We will be using Map script file in last  -->
- <script src="/js/map.js">
- </script>
+ <script src="/js/map.js"></script>
 
 
 

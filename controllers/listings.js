@@ -1,8 +1,9 @@
 const Listing = require("../models/listing.js");
-const Booking = require("../models/booking.js");
+
 //for maps - Reference Docs
 // Geocoding → place name → coordinates
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const { isOwner } = require("../middleware.js");
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
@@ -140,22 +141,4 @@ module.exports.destroyListings = async (req, res) => {
   //   console.log(deleteList);
   req.flash("success", "listing deleted!");
   res.redirect("/listings");
-};
-
-//booking form
-module.exports.renderBookingForm = async (req, res) => {
-  let { id } = req.params;
-  const listing = await Listing.findById(id);
-  res.render("listings/bookingForm.ejs", { listing });
-};
-
-module.exports.createBooking = async (req, res) => {
-  let { id } = req.params;
-
-  let newBooking = new Booking(req.body.booking);
-  await newBooking.save();
-  req.flash("success", "Booked");
-  res.redirect("/listings");
-
-  console.log(newBooking);
 };
