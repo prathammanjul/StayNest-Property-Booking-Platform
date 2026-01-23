@@ -1,3 +1,4 @@
+const { ref } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -19,6 +20,15 @@ const bookingSchema = new Schema({
   contact: {
     type: Number,
     required: true,
+  },
+  location: {
+    type: String,
+  },
+  country: {
+    type: String,
+  },
+  duration: {
+    type: Number,
   },
   checkIn: {
     type: Date,

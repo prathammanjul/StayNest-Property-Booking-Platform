@@ -9,9 +9,13 @@ module.exports.renderBookingForm = async (req, res) => {
   res.render("listings/bookingForm.ejs", { listing });
 };
 
+//Create booking
 module.exports.createBooking = async (req, res) => {
   const { id } = req.params;
   const { checkIn, checkOut } = req.body.booking;
+
+  //so that we can get the location , country to insert in the database
+  const listing = await Listing.findById(id);
 
   // Convert string dates → Date objects
   const checkInDate = new Date(checkIn);
@@ -35,14 +39,29 @@ module.exports.createBooking = async (req, res) => {
     return res.redirect(`/listings/${id}/booking-page`);
   }
 
+  //  DOUBLE BOOKING CHECK( Check if there is any existing booking on same date)
+  const conflictingBooking = await Booking.findOne({
+    listing: id,
+    checkIn: { $lt: checkOutDate },
+    checkOut: { $gt: checkInDate },
+  });
+  if (conflictingBooking) {
+    req.flash(
+      "error",
+      "This listing is already booked for the selected dates.",
+    );
+    return res.redirect(`/listings/${id}/booking-page`);
+  }
   // 3️ Create booking (only after validation passes)
   const newBooking = new Booking({
     ...req.body.booking,
+    location: listing.location,
+    country: listing.country,
     user: req.user._id,
     listing: id,
   });
 
-  await newBooking.save();
+  if (existingBooking) await newBooking.save();
 
   req.flash("success", "Booking confirmed!");
   res.redirect(`/listings/${id}`);
