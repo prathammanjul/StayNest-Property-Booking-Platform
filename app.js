@@ -27,6 +27,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
+const Package = require("./models/package.js");
 
 //require routes
 const listingRouter = require("./routes/listing.js");
@@ -102,6 +103,14 @@ app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 app.use("/listings", bookingRouter);
+
+// Render show package page
+app.use("/packages", async (req, res) => {
+  const allPackages = await Package.find();
+
+  console.log(allPackages);
+  res.render("listings/package.ejs", { allPackages });
+});
 
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found !"));

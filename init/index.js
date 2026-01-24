@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const initData = require("./data.js");
-const Listing = require("../models/listing.js");
+// const Listing = require("../models/listing.js");
+const Package = require("../models/package.js");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/stayNest";
 
@@ -17,12 +18,12 @@ async function main() {
 }
 
 const initDB = async () => {
-  await Listing.deleteMany({});
+  await Package.deleteMany({});
   initData.data = initData.data.map((obj) => ({
     ...obj,
     owner: "6960ffb211c988d8b0fdff16",
   }));
-  await Listing.insertMany(initData.data);
+  await Package.insertMany(initData.data);
   console.log("data was initialized");
 };
 

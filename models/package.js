@@ -48,6 +48,23 @@ const packageSchema = new Schema({
   include: {
     type: [String],
   },
+  rating: {
+    type: Number,
+  },
+  image: {
+    url: String,
+    filename: String,
+  },
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 
   itinerary: [itinerarySchema],
 });
