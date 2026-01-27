@@ -163,24 +163,49 @@ app.get("/packages/:id/edit", async (req, res) => {
   res.render("listings/editPackage", { package });
 });
 
-app.put("/packages/:id", async (req, res) => {
+app.put("/packages/:id", upload.single("package[image]"), async (req, res) => {
   if (!req.body.package) {
     throw new ExpressError(400, "Send Valid Data For package");
   }
-  const { id } = req.params;
-  let updatePackage = await Package.findByIdAndUpdate(id, {
-    ...req.body.package,
-  });
-  if (req.file) {
-    let url = req.file.path;
-    let filename = req.file.filename;
-    updatePackage.image = { url, filename };
-    await updatePackage.save();
-  }
-  req.flash("success", "Package updated!");
 
+  const { id } = req.params;
+
+  let updatePackage = await Package.findByIdAndUpdate(
+    id,
+    { ...req.body.package },
+    { new: true },
+  );
+
+  let includes = req.body.package.include;
+
+  if (Array.isArray(includes)) {
+    updatePackage.include = includes;
+  } else {
+    updatePackage.include = includes
+      .split(",")
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+  }
+
+  updatePackage.itinerary = req.body.itinerary.map((item, index) => ({
+    day: index + 1,
+    title: item.title,
+    description: item.description,
+  }));
+
+  if (req.file) {
+    updatePackage.image = {
+      url: req.file.path,
+      filename: req.file.filename,
+    };
+  }
+
+  await updatePackage.save();
+
+  req.flash("success", "Package updated!");
   res.redirect(`/packages/${id}`);
 });
+
 // ------------------------------------------
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found !"));
