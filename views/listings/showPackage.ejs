@@ -452,6 +452,7 @@ h2 {
        <div class="center">
         
 
+        <% if (currUser && currUser._id.equals(package.owner._id)) { %>
         <div class="btn">
           <a href="/packages/<%= package.id%>/edit" class="btn-signup book">
             Edit →
@@ -462,12 +463,14 @@ h2 {
         </form>
       </div>
       </div>
+      <% } %>
 
       
 
       </div>
     </div>
   </section>
+
 
   <!-- Main Content with Sidebar Layout -->
   <div class="main-content">

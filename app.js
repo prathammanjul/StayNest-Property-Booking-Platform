@@ -24,13 +24,24 @@ const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
 const flash = require("connect-flash");
 
+const {
+  isLoggedIn,
+  validatePackage,
+  isOwner,
+  saveRedirectUrl,
+} = require("./middleware.js");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const Package = require("./models/package.js");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+const {
+  listingSchema,
+  reviewSchema,
+  bookingSchema,
+  packageSchema,
+} = require("./schema.js");
 //require routes
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
@@ -113,107 +124,151 @@ app.use("/listings", bookingRouter);
 
 // ---------------------------------------------
 // Render  package listing page
-app.get("/packages", async (req, res) => {
-  const allPackages = await Package.find();
-  res.render("listings/package", { allPackages });
-});
+app.get(
+  "/packages",
+  wrapAsync(async (req, res) => {
+    const allPackages = await Package.find();
+
+    res.render("listings/package", { allPackages });
+  }),
+);
 
 // render package form
-app.get("/packages/new", (req, res) => {
-  res.render("listings/newPackage");
-});
+app.get(
+  "/packages/new",
+  isLoggedIn,
+  validatePackage,
+  wrapAsync(async (req, res) => {
+    res.render("listings/newPackage");
+  }),
+);
 
 // post add package
-app.post("/packages", upload.single("package[image]"), async (req, res) => {
-  const newPackage = new Package(req.body.package);
+app.post(
+  "/packages",
+  upload.single("package[image]"),
+  isLoggedIn,
+  validatePackage,
 
-  let url = req.file.path;
-  let filename = req.file.filename;
-  newPackage.image = { url, filename };
+  wrapAsync(async (req, res) => {
+    const newPackage = new Package(req.body.package);
+    newPackage.owner = req.user._id;
 
-  newPackage.include = req.body.package.include
-    .split(",")
-    .map((item) => item.trim())
-    .filter((item) => item.length > 0);
+    let url = req.file.path;
+    let filename = req.file.filename;
+    newPackage.image = { url, filename };
 
-  newPackage.itinerary = req.body.itinerary.map((item, index) => ({
-    day: index + 1,
-    title: item.title,
-    description: item.description,
-  }));
-
-  await newPackage.save();
-  req.flash("success", "New Listing Created!");
-
-  res.redirect("/packages");
-});
-
-// show package details
-app.get("/packages/:id", async (req, res) => {
-  const { id } = req.params;
-  const package = await Package.findById(id);
-
-  res.render("listings/showPackage", { package });
-});
-
-//edit package
-app.get("/packages/:id/edit", async (req, res) => {
-  let { id } = req.params;
-  const package = await Package.findById(id);
-  console.log(package);
-  res.render("listings/editPackage", { package });
-});
-
-app.put("/packages/:id", upload.single("package[image]"), async (req, res) => {
-  if (!req.body.package) {
-    throw new ExpressError(400, "Send Valid Data For package");
-  }
-
-  const { id } = req.params;
-
-  let updatePackage = await Package.findByIdAndUpdate(
-    id,
-    { ...req.body.package },
-    { new: true },
-  );
-
-  let includes = req.body.package.include;
-
-  if (Array.isArray(includes)) {
-    updatePackage.include = includes;
-  } else {
-    updatePackage.include = includes
+    newPackage.include = req.body.package.include
       .split(",")
       .map((item) => item.trim())
       .filter((item) => item.length > 0);
-  }
 
-  updatePackage.itinerary = req.body.itinerary.map((item, index) => ({
-    day: index + 1,
-    title: item.title,
-    description: item.description,
-  }));
+    newPackage.itinerary = req.body.itinerary.map((item, index) => ({
+      day: index + 1,
+      title: item.title,
+      description: item.description,
+    }));
 
-  if (req.file) {
-    updatePackage.image = {
-      url: req.file.path,
-      filename: req.file.filename,
-    };
-  }
+    await newPackage.save();
+    req.flash("success", "New Listing Created!");
 
-  await updatePackage.save();
+    res.redirect("/packages");
+  }),
+);
 
-  req.flash("success", "Package updated!");
-  res.redirect(`/packages/${id}`);
-});
+// show package details
+app.get(
+  "/packages/:id",
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const package = await Package.findById(id)
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+        },
+      })
+      .populate("owner");
+
+    res.render("listings/showPackage", { package });
+  }),
+);
+
+//edit package
+app.get(
+  "/packages/:id/edit",
+  isLoggedIn,
+  isOwner,
+  wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    const package = await Package.findById(id);
+    console.log(package);
+    res.render("listings/editPackage", { package, isOwner });
+  }),
+);
+
+app.put(
+  "/packages/:id",
+  upload.single("package[image]"),
+  isLoggedIn,
+  isOwner,
+  validatePackage,
+  wrapAsync(async (req, res) => {
+    if (!req.body.package) {
+      throw new ExpressError(400, "Send Valid Data For package");
+    }
+
+    const { id } = req.params;
+
+    let updatePackage = await Package.findByIdAndUpdate(
+      id,
+      { ...req.body.package },
+      { new: true },
+    );
+
+    let includes = req.body.package.include;
+
+    if (Array.isArray(includes)) {
+      updatePackage.include = includes;
+    } else {
+      updatePackage.include = includes
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => item.length > 0);
+    }
+
+    updatePackage.itinerary = req.body.itinerary.map((item, index) => ({
+      day: index + 1,
+      title: item.title,
+      description: item.description,
+    }));
+
+    if (req.file) {
+      updatePackage.image = {
+        url: req.file.path,
+        filename: req.file.filename,
+      };
+    }
+
+    await updatePackage.save();
+
+    req.flash("success", "Package updated!");
+    res.redirect(`/packages/${id}`);
+  }),
+);
 
 // DELETE PACKAGE
-app.delete("/packages/:id", async (req, res) => {
-  let { id } = req.params;
-  let package = await Package.findByIdAndDelete(id);
-  req.flash("success", "Package deleted");
-  res.redirect("/packages");
-});
+app.delete(
+  "/packages/:id",
+  isLoggedIn,
+  isOwner,
+  wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    let package = await Package.findByIdAndDelete(id);
+    req.flash("success", "Package deleted");
+    res.redirect("/packages");
+  }),
+);
 
 // ------------------------------------------
 app.use((req, res, next) => {

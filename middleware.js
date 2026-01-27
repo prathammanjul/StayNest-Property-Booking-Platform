@@ -1,9 +1,15 @@
 const Listing = require("./models/listing");
 const Review = require("./models/review");
+const Package = require("./models/package");
 //require ExpressCustom Error
 const ExpressError = require("./utils/ExpressError.js");
 // require schema.js for server side validation using joi
-const { listingSchema, reviewSchema, bookingSchema } = require("./schema.js");
+const {
+  listingSchema,
+  reviewSchema,
+  bookingSchema,
+  packageSchema,
+} = require("./schema.js");
 const express = require("express");
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -101,4 +107,27 @@ module.exports.validateBooking = async (req, res, next) => {
   } else {
     next();
   }
+};
+
+// validatePackage
+module.exports.validatePackage = (req, res, next) => {
+  const { error } = packageSchema.validate(req.body);
+
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(", ");
+    throw new ExpressError(400, msg);
+  }
+
+  next();
+};
+
+// check for the package owner
+module.exports.isOwner = async (req, res, next) => {
+  let { id } = req.params;
+  let package = await Package.findById(id);
+  if (!package.owner.equals(res.locals.currUser._id)) {
+    req.flash("error", "Your are not authorized to access it");
+    return res.redirect(`/packages/${id}`);
+  }
+  next();
 };
