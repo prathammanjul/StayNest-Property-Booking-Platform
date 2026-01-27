@@ -102,6 +102,7 @@ app.use((req, res, next) => {
 // to upload files from form - parse the form data using #Multer.
 const multer = require("multer");
 const { storage } = require("./cloudConfig.js");
+const wrapAsync = require("./utils/wrapAsync.js");
 const upload = multer({ storage });
 
 // for listing routes we are only use this route
@@ -204,6 +205,14 @@ app.put("/packages/:id", upload.single("package[image]"), async (req, res) => {
 
   req.flash("success", "Package updated!");
   res.redirect(`/packages/${id}`);
+});
+
+// DELETE PACKAGE
+app.delete("/packages/:id", async (req, res) => {
+  let { id } = req.params;
+  let package = await Package.findByIdAndDelete(id);
+  req.flash("success", "Package deleted");
+  res.redirect("/packages");
 });
 
 // ------------------------------------------

@@ -450,15 +450,17 @@ h2 {
       </div>
 
        <div class="center">
-        <div class="btn">
-          <button><i class="fa-regular fa-heart"></i></button>
-        </div>
+        
 
         <div class="btn">
           <a href="/packages/<%= package.id%>/edit" class="btn-signup book">
-            edit →
+            Edit →
           </a>
         </div>
+        <form method="post" action="/packages/<%= package.id %>?_method=Delete">
+          <button class="btn-signup book">Delete this listing</button>
+        </form>
+      </div>
       </div>
 
       
