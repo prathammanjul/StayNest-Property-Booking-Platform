@@ -131,7 +131,15 @@ app.use("/listings", bookingRouter);
 app.get(
   "/packages",
   wrapAsync(async (req, res) => {
-    const allPackages = await Package.find();
+    const { category } = req.query;
+
+    let Packagefilter = {};
+
+    if (category) {
+      Packagefilter.categories = category;
+    }
+
+    const allPackages = await Package.find(Packagefilter);
 
     res.render("listings/package", { allPackages });
   }),
@@ -206,7 +214,7 @@ app.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     const package = await Package.findById(id);
-    // console.log(package);
+
     res.render("listings/editPackage", { package, isOwner });
   }),
 );

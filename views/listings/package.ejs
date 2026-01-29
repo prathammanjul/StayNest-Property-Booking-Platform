@@ -18,14 +18,8 @@
   gap: 24px;
   /* background-color: #0da2e7; */
   justify-items: center;
-  padding: 5rem;
+  padding: 3rem 5rem 5rem 5rem;
 }
-
-
-
-
-
-
 
 
  
@@ -107,8 +101,6 @@
     font-size: 18px;
   }
 
-
-
 .banner {
   background: linear-gradient(135deg, #3591ce, #1f7f8c, #2093a2);
   height: 384px;
@@ -171,6 +163,13 @@
   color: #fff;
 }
 
+
+
+
+
+
+
+
 </style>
 
 
@@ -184,7 +183,93 @@
   </div>
 </section>
 
+<div id="filters" class="ps-5 pe-5">
+
+  <div class="filter">
+    <a href="/packages?category=Trending"
+      ><i class="fa-solid fa-fire"></i>
+      <p>Trending</p>
+    </a>
+  </div>
+
+  <div class="filter">
+    <a href="/packages?category=Mountains"
+      ><i class="fa-solid fa-mountain-city"></i>
+      <p>Mountains</p>
+    </a>
+  </div>
+
+  <div class="filter">
+    <a href="/packages?category=Beach Escapes"
+      ><i class="fa-solid fa-umbrella-beach"></i>
+      <p>Beach Escapes</p>
+    </a>
+  </div>
+  <div class="filter">
+    <a href="/packages?category=Adventure"
+      ><i class="fa-solid fa-binoculars"></i>
+      <p>Adventure</p>
+    </a>
+  </div>
+
+  <div class="filter">
+    <a href="/packages?category=Wildlife & Safari"
+      ><i class="fa-brands fa-safari"></i>
+      <p>Wildlife & Safari</p>
+    </a>
+  </div>
+
+  <div class="filter">
+    <a href="/packages?category=Iconic cities">
+      <i class="fa-solid fa-mountain"></i>
+      <p>Iconic cities</p>
+    </a>
+  </div>
+
+  <div class="filter">
+    <a href="/packages?category=Honeymoon">
+      <i class="fa-solid fa-heart"></i>
+      <p>Honeymoon</p>
+    </a>
+  </div>
+
+  <div class="filter">
+    <a href="/packages?category=Castles">
+      <i class="fa-brands fa-fort-awesome"></i>
+      <p>Castles</p>
+    </a>
+  </div>
+
+
+  <div class="filter">
+    <a href="/packages?category=Camping">
+      <i class="fa-solid fa-campground"></i>
+      <p>Camping</p>
+    </a>
+  </div>
+
+
+  <div class="filter">
+    <a href="/packages?category=Arctic">
+      <i class="fa-regular fa-snowflake"></i>
+      <p>Arctic</p>
+    </a>
+  </div>
+
+
+  </div>
+
+
 <!-- Package Cards -->
+<% if(allPackages.length === 0){ %>
+
+    <div class="no-results">
+      <img class="img" src="images/island.png" alt="" />
+    <h3>No Package found</h3>
+    <p>Try adjusting your search terms or selected category</p>
+  </div>
+
+  <% } else { %>
 
 <section class=" travel-package">
   <% for(let package of allPackages) { %>
@@ -193,7 +278,7 @@
       <div class="card-body">
    
         <div class="rating">
-          <p class="best-seller category" ><%=package.category %></p>
+          <p class="best-seller category" ><%=package.categories%></p>
 
           <!-- <p class="star" >
             <i class="fa fa-star "></i><%= package.rating %>
@@ -221,6 +306,7 @@
             </ul>
         </div>
 
+  
         <hr />
 
         <!-- Pricing Section -->
@@ -235,8 +321,9 @@
       </div>
     </div>
   </div>
-   <% } %>
+  <% } %>
 </section>
+<% } %>
 
 
 <div class="travel-agent">
@@ -266,5 +353,10 @@
       element.classList.add("category-adventure");
     }    
   });
+
+
+
+
+
   
 </script>

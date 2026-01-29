@@ -1,16 +1,16 @@
 <% layout("layouts/boilerplate") %>
 
 <style>
-     .btn-add{
-        border: solid black 1px;       
-     }
+  .btn-add {
+    border: solid black 1px;
+  }
 
-     .btn-add:hover{
-        background-color: rgb(150, 206, 255);
-        color: black !important;
-         
-         border: solid black 1px;
-     }
+  .btn-add:hover {
+    background-color: rgb(150, 206, 255);
+    color: black !important;
+
+    border: solid black 1px;
+  }
 </style>
 
 <div class="row mt-4">
@@ -24,7 +24,6 @@
       novalidate
       class="needs-validation"
       enctype="multipart/form-data"
-
     >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -112,34 +111,49 @@
           <div class="invalid-feedback">Activities should be valid</div>
         </div>
 
-        <div class="mb-3 col-md-6">
-          <label for="category" class="form-label ">category</label>
-          <input
-            name="package[category]"
-            type="text"
-            placeholder="Mountains , Adventure , Beach"
-            class="form-control "
+        <div class="form-group cat-form">
+          <label for="categories">Select category</label>
+
+          <select
+            id="categories"
+            class="cat-dropdown "
+            name="package[categories]"
             required
-          />
+          >
+            <option value="">Select your option</option>
+            <option value="Mountains">Mountains</option>
+            <option value="Trending">Trending</option>
+            <option value="Beach Escapes">Beach Escapes</option>
+            <option value="Iconic cities">Iconic cities</option>
+            <option value="Castles">Castles</option>
+            <option value="Wildlife & Safari">Wildlife & Safari</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Camping">Camping</option>
+            <option value="Arctic">Arctic</option>
+            <option value="Honeymoon">Honeymoon</option>
+          </select>
           <div class="valid-feedback">Looks Good!</div>
           <div class="invalid-feedback">Category should be valid</div>
         </div>
 
 
-        <div class="mb-3 col-md-6">
-          <label for="include" class="form-label ">Things Included? (Minimum 4)</label>
-          <input
-            name="package[include]"
-            type="text"
-            placeholder="All meals and refreshments " 
-            class="form-control "
-            required
-          />
-          <div class="valid-feedback">Looks Good!</div>
-          <div class="invalid-feedback">Enter atleast 4</div>
-        </div>
+      <div class="mb-3 ">
+        <label for="include" class="form-label"
+          >Things Included? (Minimum 4)</label
+        >
+        <textarea  name="package[include]"
+          type="text"
+          placeholder="All meals and refreshments "
+          class="form-control"
+          required>
 
-         <div class="mb-3">
+        </textarea>
+
+        <div class="valid-feedback">Looks Good!</div>
+        <div class="invalid-feedback">Enter atleast 4</div>
+      </div>
+
+      <div class="mb-3">
         <label for="image" class="form-label">Upload Image</label>
         <input
           name="package[image]"
@@ -150,31 +164,31 @@
           required
         />
       </div>
-        <div id="itinerary-container">
-            <!-- Day 1 -->
-             <h5 class="mt-3 mb-4" >Add Day by Day Itinerary [Minimum 2]</h5>
-            <div class="itinerary-day">
-                <h6>Day 1</h6>
+      <div id="itinerary-container">
+        <!-- Day 1 -->
+        <h5 class="mt-3 mb-4">Add Day by Day Itinerary [Minimum 2]</h5>
+        <div class="itinerary-day">
+          <h6>Day 1</h6>
 
-                <input
-                class="form-control mb-4"
-                name="itinerary[0][title]"
-                placeholder="Day 1 Title"
-                required
-                />
+          <input
+            class="form-control mb-4"
+            name="itinerary[0][title]"
+            placeholder="Day 1 Title"
+            required
+          />
 
-                <input
-                class="form-control mb-4"
-                name="itinerary[0][description]"
-                placeholder="Day 1 Description"
-                required
-                />
-            </div>    
+          <input
+            class="form-control mb-4"
+            name="itinerary[0][description]"
+            placeholder="Day 1 Description"
+            required
+          />
         </div>
+      </div>
 
-<button type="button" id="addDayBtn" class=" btn btn-add mb-4 mt-3">
-  Add Day + 
-</button>
+      <button type="button" id="addDayBtn" class="btn btn-add mb-4 mt-3">
+        Add Day +
+      </button>
 
       <!-- <div class="mb-3">
         <label for="image" class="form-label">Upload Listing Image </label>
@@ -232,7 +246,13 @@
         <div class="invalid-feedback">Location should be valid</div>
       </div>
 
-      <button type="submit" style="width: 100%" class="btn btn-signup mt-3 mb-5"> add</button>
+      <button
+        type="submit"
+        style="width: 100%"
+        class="btn btn-signup mt-3 mb-5"
+      >
+        add
+      </button>
     </form>
   </div>
 </div>
@@ -240,7 +260,7 @@
 <script>
   let dayCount = 1;
 
-  document.getElementById("addDayBtn").addEventListener("click" , ()=>{
+  document.getElementById("addDayBtn").addEventListener("click", () => {
     const container = document.getElementById("itinerary-container");
 
     const dayDiv = document.createElement("div");
@@ -263,11 +283,9 @@
                 />
                 `;
 
-                container.appendChild(dayDiv);
-                dayCount++;
-                // console.log(dayDiv);
-                // console.log(container);
-    
+    container.appendChild(dayDiv);
+    dayCount++;
+    // console.log(dayDiv);
+    // console.log(container);
   });
-
 </script>

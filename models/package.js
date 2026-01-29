@@ -54,8 +54,20 @@ const packageSchema = new Schema({
     type: String,
     required: true,
   },
-  category: {
+  categories: {
     type: String,
+    enum: [
+      "Trending",
+      "Iconic cities",
+      "Mountains",
+      "Castles",
+      "Camping",
+      "Arctic",
+      "Adventure",
+      "Beach Escapes",
+      "Honeymoon",
+      "Wildlife & Safari",
+    ],
   },
   include: {
     type: [String],

@@ -1,76 +1,76 @@
 <% layout("/layouts/boilerplate") %>
-<link href="/css/indexPage.css" rel="stylesheet" />
 
-<div id="filters" class="ps-5 pe-5">
 
-  <div class="fliter">
+<div id="filters"  class="ps-5 pe-5">
+
+  <div class="filter">
     <a href="/listings?category=Trending"
       ><i class="fa-solid fa-fire"></i>
       <p>Trending</p>
     </a>
   </div>
-  <div class="fliter">
+  <div class="filter">
     <a href="/listings?category=Rooms"
       ><i class="fa-solid fa-bed"></i>
       <p>Rooms</p>
     </a>
   </div>
-  <div class="fliter">
+  <div class="filter">
     <a href="/listings?category=Mountains"
       ><i class="fa-solid fa-mountain-city"></i>
       <p>Moutains</p>
     </a>
   </div>
 
-  <div class="fliter">
+  <div class="filter">
     <a href="/listings?category=Iconic cities">
       <i class="fa-solid fa-mountain"></i>
       <p>Iconic cities</p>
     </a>
   </div>
 
-  <div class="fliter">
+  <div class="filter">
     <a href="/listings?category=Castles">
       <i class="fa-brands fa-fort-awesome"></i>
       <p>Castles</p>
     </a>
   </div>
 
-  <div class="fliter">
+  <div class="filter">
     <a href="/listings?category=Amazing pools">
       <i class="fa-solid fa-person-swimming"></i>
       <p>Amazing pools</p>
     </a>
   </div>
 
-  <div class="fliter">
+  <div class="filter">
     <a href="/listings?category=Camping">
       <i class="fa-solid fa-campground"></i>
       <p>Camping</p>
     </a>
   </div>
 
-  <div class="fliter">
+  <div class="filter">
     <a href="/listings?category=Farms">
       <i class="fa-solid fa-cow"></i>
       <p>Farms</p>
     </a>
   </div>
 
-  <div class="fliter">
+  <div class="filter">
     <a href="/listings?category=Arctic">
       <i class="fa-regular fa-snowflake"></i>
       <p>Arctic</p>
     </a>
   </div>
 
-  <div class="fliter">
+  <div class="filter">
     <a href="/listings?category=Domes">
       <i class="fa-solid fa-igloo"></i>
       <p>Domes</p>
     </a>
   </div>
-  <div class="fliter">
+  <div class="filter">
     <a href="/listings?category=Boats">
       <i class="fa-solid fa-ship"></i>
       <p>Boats</p>
@@ -97,8 +97,9 @@
 
   <% if(allListings.length === 0){ %>
     <div class="no-results">
+      <img class="img" src="images/island.png" alt="" />
     <h3>No listings found</h3>
-    <p>Try selecting a different category.</p>
+    <p>Try adjusting your search terms or selected category</p>
   </div>
 
   <% } else { %> 

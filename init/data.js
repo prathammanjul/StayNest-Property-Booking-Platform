@@ -159,7 +159,7 @@ const samplePackages = [
     price: 516441,
     location: "Zurich, Interlaken & Zermatt",
     country: "Switzerland",
-    category: "Mountains",
+    categories: "Arctic",
     rating: 4.9,
     include: [
       "7 nights accommodation in luxury alpine lodge",
@@ -220,7 +220,7 @@ const samplePackages = [
     price: 124999,
     location: "Manali & Solang Valley",
     country: "India",
-    category: "Mountains",
+    categories: "Mountains",
     rating: 4.5,
     include: [
       "6 nights hotel stay",
@@ -267,7 +267,7 @@ const samplePackages = [
     price: 289000,
     location: "Banff & Lake Louise",
     country: "Canada",
-    category: "Mountains",
+    categories: "Mountains",
     rating: 4.6,
     include: [
       "Mountain lodge stay",
@@ -300,7 +300,7 @@ const samplePackages = [
     price: 475000,
     location: "El Calafate & Torres del Paine",
     country: "Argentina",
-    category: "Mountains",
+    categories: "Adventure",
     rating: 4.4,
     include: [
       "Eco-lodge stay",
@@ -332,7 +332,7 @@ const samplePackages = [
     price: 310000,
     location: "Cortina d’Ampezzo",
     country: "Italy",
-    category: "Mountains",
+    categories: "Iconic cities",
     rating: 4.2,
     include: [
       "Hotel stay",
@@ -360,7 +360,7 @@ const samplePackages = [
     price: 350000,
     location: "Cusco & Sacred Valley",
     country: "Peru",
-    category: "Mountains",
+    categories: "Camping",
     rating: 4.6,
     include: ["Hotel stay", "Guided tours", "Machu Picchu entry", "Transport"],
     itinerary: [

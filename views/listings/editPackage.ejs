@@ -114,32 +114,50 @@
           <div class="invalid-feedback">Activities should be valid</div>
         </div>
 
-        <div class="mb-3 col-md-6">
-          <label for="category" class="form-label ">category</label>
-          <input
-            name="package[category]"
-            type="text"
-            value="<%= package.category %>"
-            class="form-control "
+         <div class="form-group cat-form">
+          <label for="categories">Select category</label>
+
+          <select
+            id="categories"
+            class="cat-dropdown "
+            name="package[categories]"
             required
-          />
+          >
+            <option value="<%=package.categories  %>"><%=package.categories %></option>
+            <option value="Mountains">Mountains</option>
+            <option value="Trending">Trending</option>
+            <option value="Beach Escapes">Beach Escapes</option>
+            <option value="Iconic cities">Iconic cities</option>
+            <option value="Castles">Castles</option>
+            <option value="Wildlife & Safari">Wildlife & Safari</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Camping">Camping</option>
+            <option value="Arctic">Arctic</option>
+            <option value="Honeymoon">Honeymoon</option>
+          </select>
           <div class="valid-feedback">Looks Good!</div>
           <div class="invalid-feedback">Category should be valid</div>
         </div>
 
 
-        <div class="mb-3 col-md-6">
-          <label for="include" class="form-label ">Things Included? (Minimum 4)</label>
-          <input
-            name="package[include]"
-            type="text"
-            value="<%= package.include %>" 
-            class="form-control "
-            required
-          />
-          <div class="valid-feedback">Looks Good!</div>
-          <div class="invalid-feedback">Enter atleast 4</div>
-        </div>
+      <div class="mb-3 ">
+        <label for="include" class="form-label"
+          >Things Included? (Minimum 4)</label
+        >
+        <textarea  name="package[include]"
+          type="text"
+          placeholder="All meals and refreshments "
+          class="form-control"
+          required>
+          <%=package.include  %>
+
+        </textarea>
+
+
+
+        <div class="valid-feedback">Looks Good!</div>
+        <div class="invalid-feedback">Enter atleast 4</div>
+      </div>
 
      
          <div class="mb-3">

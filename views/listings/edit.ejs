@@ -44,6 +44,32 @@
         <input name="listing[image]" type="file" class="form-control" />
       </div>
 
+      <div class="form-group cat-form">
+        <label for="categories">Select category</label>
+
+        <select
+          id="categories"
+          class="cat-dropdown"
+          name="listing[categories]"
+          required
+        >
+          <option value="<%= listing.categories %> ">
+            <%= listing.categories %>
+          </option>
+          <option value="Mountains">Mountains</option>
+          <option value="Trending">Trending</option>
+          <option value="Rooms">Rooms</option>
+          <option value="Iconic cities">Iconic cities</option>
+          <option value="Castles">Castles</option>
+          <option value="Amazing pools">Amazing pools</option>
+          <option value="Farms">Farms</option>
+          <option value="Camping">Camping</option>
+          <option value="Arctic">Arctic</option>
+          <option value="Domes">Domes</option>
+          <option value="Boats">Boats</option>
+        </select>
+      </div>
+
       <div class="row">
         <div class="mb-3 col-md-6">
           <label for="price" class="form-label">Price</label>

@@ -73,6 +73,7 @@ module.exports.createNewListings = async (req, res) => {
   newListing.geometry = response.body.features[0].geometry;
 
   let savedListing = await newListing.save();
+  // console.log(req.body.listing);
   // console.log(savedListing);
   req.flash("success", "New Listing Created!");
 
@@ -85,8 +86,6 @@ module.exports.createNewListings = async (req, res) => {
   //     filename: file.filename,
   //   }));
   // }
-
-  // console.log(newListing);
 };
 
 //Render EDIT form
