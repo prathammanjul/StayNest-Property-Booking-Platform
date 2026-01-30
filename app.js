@@ -30,6 +30,7 @@ const {
   isOwner,
   validateReview,
   isPackageOwner,
+  isNotPackageOwner,
   saveRedirectUrl,
 } = require("./middleware.js");
 const passport = require("passport");
@@ -172,7 +173,6 @@ app.post(
   upload.single("package[image]"),
   isLoggedIn,
   validatePackage,
-
   wrapAsync(async (req, res) => {
     const newPackage = new Package(req.body.package);
     newPackage.owner = req.user._id;
@@ -309,8 +309,8 @@ app.post(
     package.reviews.push(newReview);
     await newReview.save();
     await package.save();
-    console.log(newReview);
-    console.log(package);
+    // console.log(newReview);
+    // console.log(package);
 
     req.flash("success", "Review added!");
 
@@ -320,6 +320,7 @@ app.post(
 
 app.delete(
   "/packages/:id/reviews/:reviewId",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     let { id, reviewId } = req.params;
     // remove the review id (reference) from the listing's reviews array
@@ -331,16 +332,73 @@ app.delete(
   }),
 );
 
-app.get("/packages/:id/packageBookingForm", async (req, res) => {
-  const { id } = req.params;
-  const package = await Package.findById(id);
-  //send checkin checkout data
-  const existingBooking = await Booking.find(
-    { package: id },
-    { checkIn: 1, checkOut: 1 },
-  );
-  res.render("listings/packageBookingForm", { package, existingBooking });
-});
+// render booking form
+
+app.get(
+  "/packages/:id/packageBookingForm",
+  isLoggedIn,
+  isNotPackageOwner,
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const package = await Package.findById(id);
+    //send checkin checkout data
+    const existingBooking = await Booking.find(
+      { package: id },
+      { checkIn: 1, checkOut: 1 },
+    );
+    res.render("listings/packageBookingForm", { package, existingBooking });
+  }),
+);
+
+// Create Package booking (POST)
+
+app.post(
+  "/packages/:id/packageBookingForm",
+  isLoggedIn,
+  validatePackage,
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const { checkIn, checkOut } = req.body.booking;
+
+    //Fetch Listing data to get location , country to insert in Booking database
+    const package = await Package.findById(id);
+
+    // Convert string dates → Date objects
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+    const today = new Date();
+    // comparison becomes date-only, not time-based.
+    today.setHours(0, 0, 0, 0); // normalize
+
+    //  DOUBLE BOOKING CHECK( Check if there is any existing booking on same date)
+    const conflictingBooking = await Booking.findOne({
+      package: id,
+      checkIn: { $lt: checkOutDate },
+      checkOut: { $gt: checkInDate },
+    });
+    //Conflict found - NO Booking
+    if (conflictingBooking) {
+      req.flash(
+        "error",
+        "This listing is already booked for the selected dates.",
+      );
+      return res.redirect(`/packages/${id}/packageBookingForm`);
+    }
+    // 3️ Create booking Object (only after All validation passes)
+    const newBooking = new Booking({
+      ...req.body.booking,
+      location: package.location,
+      country: package.country,
+      user: req.user._id,
+      package: id,
+    });
+
+    await newBooking.save();
+
+    req.flash("success", "Booking confirmed!");
+    res.redirect(`/packages/${id}`);
+  }),
+);
 
 // ------------------------------------------
 app.use((req, res, next) => {

@@ -66,7 +66,7 @@ const packageSchema = new Schema({
       "Adventure",
       "Beach Escapes",
       "Honeymoon",
-      "Wildlife & Safari",
+      "Wildlife-Safari",
     ],
   },
   include: {

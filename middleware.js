@@ -131,3 +131,18 @@ module.exports.isPackageOwner = async (req, res, next) => {
   }
   next();
 };
+
+module.exports.isNotPackageOwner = async (req, res, next) => {
+  const { id } = req.params;
+  const package = await Package.findById(id);
+  if (!package) {
+    req.flash("error", "Listing not found");
+    return res.redirect("/package");
+  }
+
+  if (package.owner.equals(req.user._id)) {
+    req.flash("error", "Owners cannot book their own listings");
+    return res.redirect(`/packages/${id}`);
+  }
+  next();
+};
