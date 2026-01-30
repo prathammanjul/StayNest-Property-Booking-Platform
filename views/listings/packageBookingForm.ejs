@@ -1,6 +1,9 @@
 <% layout("layouts/boilerplate") %>
 <link href="/css/bookingForm.css" rel="stylesheet" />
 
+
+
+
 <div class="booking-container">
   <div class="booking-header">
     <button class="back-btn" id="backBtn">
@@ -11,8 +14,8 @@
       <p class="booking-subtitle">Fill in your details to book</p>
     </div>
   </div>
-<!-- 
-  <div class="booking-requirements">
+
+  <!-- <div class="booking-requirements">
     <div class="requirement-card">
       <i class="fas fa-info-circle"></i>
       <div class="requirement-content">
@@ -31,10 +34,10 @@
 
         <div class="package-info">
           <div class="package-details">
-            <h4 class="package-name"><%= listing.title %></h4>
-            <p class="package-type"><%= listing.categories %></p>
+            <h4 class="package-name"><%= package.title %></h4>
+            <p class="package-type"><%= package.categories %></p>
             <p class="package-location">
-                <%= `${listing.location}, ${listing.country}` %>
+                <%= `${package.location}, ${package.country}` %>
 
             </p>
             <p class="package-duration">
@@ -46,8 +49,8 @@
         <div class="price-summary">
           <div class="price-row">
             <span>Base Price</span>
-            <span id="base-price" data-price="<%= listing.price %>">
-              ₹<%= listing.price.toLocaleString("en-IN") %> / night
+            <span id="base-price" data-price="<%= package.price %>">
+              ₹<%= package.price.toLocaleString("en-IN") %> / night
             </span>
 
           </div>
@@ -59,7 +62,8 @@
           <div class="price-row total">
             <span><strong>Total</strong></span>
             <span >
-              <strong id="total-price">&#8377;<%=listing.price %></strong>
+              <strong id="total-price">
+              ₹<%= package.price.toLocaleString("en-IN") %> </strong>
               </span
 
             >
@@ -72,7 +76,7 @@
     <div class="form-container">
       <form
         method="POST"
-        action="/listings/<%=listing._id%>/bookings"
+        action="/packages/<%=package._id%>/packageBookingForm"
         novalidate
         class="needs-validation"
 
@@ -201,7 +205,7 @@
 
           <div class="form-group" >
             <label for="guests">Number of Guests</label>
-            <select id="guests" class="guests-dropdown" name="booking[guests] " >
+            <select id="guests" class="guests-dropdown" name="booking[guests]" >
               <option value="1">1 Guest</option>
               <option value="2">2 Guests</option>
               <option value="3">3 Guests</option>
@@ -280,8 +284,9 @@
 </div>
 
 
-
-<script src="/js/bookingForm.js"> 
+<script src="/js/packageBookingForm.js"> 
 </script>
  
 <script> const bookedRanges = <%- JSON.stringify(existingBooking) %>;</script>
+ 
+

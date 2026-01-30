@@ -36,6 +36,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const Package = require("./models/package.js");
+const Booking = require("./models/booking.js");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -44,6 +45,7 @@ const {
   reviewSchema,
   bookingSchema,
   packageSchema,
+  BookingSchema,
 } = require("./schema.js");
 //require routes
 const listingRouter = require("./routes/listing.js");
@@ -328,6 +330,18 @@ app.delete(
     res.redirect(`/packages/${id}`);
   }),
 );
+
+app.get("/packages/:id/packageBookingForm", async (req, res) => {
+  const { id } = req.params;
+  const package = await Package.findById(id);
+  //send checkin checkout data
+  const existingBooking = await Booking.find(
+    { package: id },
+    { checkIn: 1, checkOut: 1 },
+  );
+  res.render("listings/packageBookingForm", { package, existingBooking });
+});
+
 // ------------------------------------------
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found !"));

@@ -59,6 +59,10 @@ const bookingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "listing",
   },
+  package: {
+    type: Schema.Types.ObjectId,
+    ref: "package",
+  },
 });
 
 const Booking = mongoose.model("Booking", bookingSchema);
