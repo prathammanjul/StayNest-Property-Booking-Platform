@@ -313,16 +313,16 @@
 
   
   <div class="testimonials-scroll-container">
-  <% for (let reviews of package.reviews) { %>
+  <% for (let review of package.reviews) { %>
 
     
    
   <div class="testimonial-card review-card">
       <div class="quote">❝</div>
-         <p class="starability-result staticCardStar five-stars " data-rating = <%=reviews.rating %>>
+         <p class="starability-result staticCardStar five-stars " data-rating = <%=review.rating %>>
   </p> 
       <p class="customer-review">
-       <%=reviews.comment  %>
+       <%=review.comment  %>
       </p>
       <div class="test-details">
         <div class="user-avatar">
@@ -330,7 +330,7 @@
         </div>
 
         <div class="user-info">
-          <span class="user-name"><%=reviews.author.username  %></span>
+          <span class="user-name"><%=review.author.username  %></span>
           <span class="from"><%=package.country%></span>
           <span class="pack-name"><%=package.title  %></span>
         </div>
@@ -338,11 +338,11 @@
           <!-- Review Delete button  -->
 
     <form
-      action="/packages/<%= package._id %>/reviews/<%= reviews._id %>?_method=DELETE"
+      action="/packages/<%= package._id %>/reviews/<%= review._id %>?_method=DELETE"
       method="POST"
       class="mb-1 mt-1"
     >
-      <% if (currUser && !package.owner.equals(currUser._id)) { %>
+      <% if (currUser && review.author._id.toString() === currUser._id.toString()) { %>
       <button class="btn btn-sm btn-login ">Delete</button>
         <% } %>
     </form>
